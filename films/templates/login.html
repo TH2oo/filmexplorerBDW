@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Connexion - Film Explorer{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <span class="film-icon">🔐</span>
+            <h2>Content de vous revoir</h2>
+            <p>Entrez vos accès pour gérer votre watchlist</p>
+        </div>
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="error-msg" style="color: #e74c3c; background: #fdeaea; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9em; text-align: center;">
+                    Nom d'utilisateur ou mot de passe incorrect.
+                </div>
+            {% endif %}
+
+            <div class="input-group">
+                <label for="id_username">Nom d'utilisateur</label>
+                <input type="text" name="username" id="id_username" placeholder="Votre pseudo" required autofocus>
+            </div>
+
+            <div class="input-group">
+                <label for="id_password">Mot de passe</label>
+                <input type="password" name="password" id="id_password" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn-submit">Se connecter</button>
+        </form>
+
+        <div class="login-help" style="margin-top: 20px; text-align: center; font-size: 0.9em;">
+            <p>Nouveau ici ? <a href="{% url 'signup' %}" style="color: #3498db; text-decoration: none; font-weight: bold;">Créer un compte</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ film.title }} - Film Explorer{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/filmDetails.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <article class="detail-card">
+
+        <div class="detail-banner">
+            <span class="banner-icon">🎬</span>
+        </div>
+
+        <div class="detail-body">
+            <h1 class="detail-title">{{ film.title }}</h1>
+
+            <div class="detail-meta">
+                <span class="meta-badge">📅 {{ film.release_year }}</span>
+                <span class="meta-badge">🔗 {{ film.slug }}</span>
+            </div>
+
+            <div class="detail-section">
+                <h2>Informations</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Titre</span>
+                        <span class="info-value">{{ film.title }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Année de sortie</span>
+                        <span class="info-value">{{ film.release_year }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Slug</span>
+                        <span class="info-value"><code>{{ film.slug }}</code></span>
+                    </div>
+                </div>
+            </div>
+
+            {% if user.is_authenticated %}
+            <div class="detail-actions">
+                <form method="post" action="{% url 'film_details' title=film.title %}">
+                    {% csrf_token %}
+                    {% if in_watchlist %}
+                        <input type="hidden" name="action" value="remove">
+                        <button type="submit" class="btn-watchlist btn-remove-wl">
+                            ✕ Retirer de ma watchlist
+                        </button>
+                    {% else %}
+                        <input type="hidden" name="action" value="add">
+                        <button type="submit" class="btn-watchlist btn-add-wl">
+                            ➕ Ajouter à ma watchlist
+                        </button>
+                    {% endif %}
+                </form>
+            </div>
+            {% endif %}
+
+            <div class="detail-footer">
+                <a href="{% url 'film_list_template' %}" class="btn-back">← Ma Watchlist</a>
+                <a href="{% url 'film_browse' %}" class="btn-back btn-secondary">🔍 Parcourir</a>
+            </div>
+        </div>
+
+    </article>
+</div>
+{% endblock %}

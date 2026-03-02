@@ -1,0 +1,14 @@
+{% load static %}
+
+<html><head>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<h1>Film Explorer</h1>
+<p>Explore films here!</p>
+    <ul>
+        {% for film in films %}
+        <li>{{ film }}</li>
+        {% endfor %}
+    </ul>
+</body></html>

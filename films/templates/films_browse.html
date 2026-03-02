@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Liste des Films - Film Explorer{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/browser.css' %}?v={{ cache_version|default:'1' }}">
+{% endblock %}
+
+{% block content %}
+<section class="explorer-section">
+    <h1>Explorer les films</h1>
+    <p>Voici la sélection du moment pour vous.</p>
+
+    <div class="film-grid">
+        {% for film in films %}
+            <a href="{% url 'film_details' title=film.title %}" class="film-card-link">
+                <div class="film-item">
+                    <div class="film-content">
+                        <span class="film-icon">🎬</span>
+                        <span class="film-title">{{ film.title }}</span>
+                    </div>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+        {% empty %}
+            <p class="empty-msg">Aucun film n'est disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

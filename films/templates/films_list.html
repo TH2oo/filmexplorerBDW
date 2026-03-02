@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ma Watchlist - Film Explorer{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/films.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="explorer-section">
+    <div class="section-header">
+        <h1>Ma Watchlist</h1>
+        <p>Gérez votre collection personnelle de films.</p>
+    </div>
+
+    <div class="film-grid">
+        {% for item in items %}
+            <div class="film-item">
+                <div class="film-content">
+                    <span class="film-icon">🎬</span>
+                    <span class="film-title">{{ item.title }}</span>
+                </div>
+                <form method="post" action="{% url 'film_list_template' %}" class="remove-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="remove">
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <button type="submit" class="btn-remove" title="Retirer de la watchlist">✕</button>
+                </form>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <span class="empty-icon">📭</span>
+                <p class="empty-msg">Votre watchlist est vide.<br>Ajoutez votre premier film !</p>
+            </div>
+        {% endfor %}
+
+        <div class="film-item add-card-trigger" onclick="toggleModal()">
+            <div class="film-content">
+                <span class="film-icon">➕</span>
+                <span class="film-title">Ajouter un film</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modale d'ajout -->
+<div id="addModal" class="modal-overlay" onclick="closeModalOutside(event)">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2>🎬 Ajouter un film</h2>
+            <button class="modal-close" onclick="toggleModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <label for="searchFilm">Rechercher un film</label>
+            <input type="text" id="searchFilm" placeholder="Tapez pour filtrer..." autocomplete="off">
+
+            <div class="film-list-scroll">
+                {% for film in available_films %}
+                <form method="post" action="{% url 'film_list_template' %}" class="film-pick-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="film_title" value="{{ film.title }}">
+                    <button type="submit" class="film-pick-item" data-title="{{ film.title|lower }}">
+                        <span class="pick-icon">🎬</span>
+                        <span class="pick-info">
+                            <span class="pick-title">{{ film.title }}</span>
+                            <span class="pick-year">{{ film.release_year }}</span>
+                        </span>
+                        <span class="pick-add">+ Ajouter</span>
+                    </button>
+                </form>
+                {% empty %}
+                <p class="empty-pick">Tous les films sont déjà dans votre watchlist 🎉</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleModal() {
+        const modal = document.getElementById('addModal');
+        modal.classList.toggle('active');
+        if (modal.classList.contains('active')) {
+            document.getElementById('searchFilm').value = '';
+            filterFilms();
+            document.getElementById('searchFilm').focus();
+        }
+    }
+    function closeModalOutside(e) {
+        if (e.target === document.getElementById('addModal')) toggleModal();
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('addModal');
+            if (modal.classList.contains('active')) toggleModal();
+        }
+    });
+
+    // Recherche en temps réel
+    document.getElementById('searchFilm').addEventListener('input', filterFilms);
+    function filterFilms() {
+        const query = document.getElementById('searchFilm').value.toLowerCase();
+        document.querySelectorAll('.film-pick-item').forEach(function(item) {
+            const title = item.getAttribute('data-title');
+            item.closest('.film-pick-form').style.display = title.includes(query) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}

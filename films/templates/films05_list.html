@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script> 
+    
+    <style>
+        .dataTables_wrapper { padding: 20px; background: white; border-radius: 12px; margin-top: 20px; }
+        #filmTable_filter input { border: 1px solid #ddd; border-radius: 5px; padding: 5px; }
+        table.dataTable thead th { background-color: #f8fafc; color: #2c3e50; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h1>Explorateur de Données</h1>
+<p>Utilisez la recherche pour filtrer les films par année ou par titre.</p>
+
+<table id="filmTable" class="display">
+    <thead>
+        <tr>
+            <th>Titre</th> 
+            <th>Année de sortie</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for film in films %}
+        <tr>
+            <td>
+                <a href="{% url 'film_details' title=film.title %}" style="text-decoration: none; color: #3498db; font-weight: bold;">
+                    {{ film.title }}
+                </a>
+            </td>
+            <td>{{ film.release_year }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#filmTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/French.json"
+            }
+        });
+    });
+</script>
+{% endblock %}

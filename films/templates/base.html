@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Film Explorer{% endblock %}</title>
+    
+    {% load static %}
+    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="{% url 'film_list_template' %}" class="logo">🎬 FilmExplorer</a>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="{% url 'film_list_template' %}">Accueil</a></li>
+                    <li><a href="{% url 'film_browse' %}">Parcourir</a></li>
+                    {% if user.is_authenticated %}
+                        <li><span class="nav-user">👤 {{ user.username }}</span></li>
+                        <li><a href="{% url 'logout' %}" class="btn-logout">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}" class="btn-login">Connexion</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; {{ year|default:2026 }} — Projet Django L3 Informatique</p>
+        </div>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

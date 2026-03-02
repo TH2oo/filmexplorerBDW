@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inscription - Film Explorer{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <div class="signup-card">
+        <div class="signup-header">
+            <span class="signup-icon">🎬</span>
+            <h2>Créer un compte</h2>
+            <p>Rejoignez Film Explorer et gérez votre watchlist</p>
+        </div>
+
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-msg">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="input-group">
+                <label for="id_username">Nom d'utilisateur</label>
+                <input type="text" name="username" id="id_username"
+                       placeholder="Choisissez un pseudo"
+                       value="{{ form.username.value|default:'' }}"
+                       required autofocus>
+            </div>
+
+            <div class="input-group">
+                <label for="id_email">Adresse e-mail</label>
+                <input type="email" name="email" id="id_email"
+                       placeholder="votre@email.com"
+                       value="{{ form.email.value|default:'' }}">
+            </div>
+
+            <div class="input-group">
+                <label for="id_password1">Mot de passe</label>
+                <input type="password" name="password1" id="id_password1"
+                       placeholder="••••••••" required>
+            </div>
+
+            <div class="input-group">
+                <label for="id_password2">Confirmer le mot de passe</label>
+                <input type="password" name="password2" id="id_password2"
+                       placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-submit">S'inscrire</button>
+        </form>
+
+        <div class="signup-help">
+            <p>Déjà un compte ? <a href="{% url 'login' %}">Se connecter</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

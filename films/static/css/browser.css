@@ -1,0 +1,101 @@
+/* --- Titres de la page --- */
+h1 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* --- Grille de Films --- */
+.film-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+/* --- Item de Film (Carte) - TA FORME GARDÉE --- */
+.film-item {
+    position: relative; /* Indispensable pour la flèche */
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;      
+    justify-content: center;   
+    text-align: center;
+    border: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* --- LA FLÈCHE (Ajoutée sans casser la forme) --- */
+.arrow {
+    position: absolute;
+    right: 15px;
+    color: #3498db;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+/* --- HOVER GLOBAL --- */
+.film-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border-color: #3498db;
+    background-color: #f0f7ff; /* Petit changement de fond pour le feedback */
+}
+
+/* Apparition de la flèche au hover */
+.film-item:hover .arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.film-item strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.film-title {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+/* --- LE BOUTON AJOUTER (Style inversé) - TA FORME GARDÉE --- */
+.add-card-trigger {
+    background-color: #3498db; 
+    color: white;
+    justify-content: center; 
+}
+
+.add-card-trigger .film-title {
+    color: white; 
+}
+
+.add-card-trigger .film-icon {
+    filter: brightness(0) invert(1); 
+}
+
+/* Hover spécial bouton : Ta bordure blanche */
+.add-card-trigger:hover {
+    background-color: #2980b9; 
+    border: 2px solid white; 
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+/* La flèche devient blanche sur le bouton bleu */
+.add-card-trigger:hover .arrow {
+    color: white;
+}
+
+.film-card-link {
+    text-decoration: none; /* Enlève le soulignement du lien */
+}
